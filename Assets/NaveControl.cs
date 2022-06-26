@@ -12,12 +12,14 @@ public class NaveControl : MonoBehaviour
     public GameObject[] ojos;
     public GameObject misilPrefab;
     GameObject misilInstance;
+    public Animator animator;
     
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         scriptAltura = GetComponent<AlcanzarAltura>();
+        //animator.Play("Piloting");
     }
 
     // Update is called once per frame
@@ -33,7 +35,7 @@ public class NaveControl : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.right, out RaycastHit hit, 10, 1 << 3)) 
         {
             Debug.DrawRay(transform.position, transform.right * 10 , Color.red);
-            rb.AddForce(-transform.right * 2);
+            rb.AddForce(-transform.right * 1);
             paredDcha = hit.transform.gameObject;
         }
 
@@ -41,7 +43,7 @@ public class NaveControl : MonoBehaviour
         if (Physics.Raycast(transform.position, -transform.right, out RaycastHit hit2, 10, 1 << 3)) 
         {
             Debug.DrawRay(transform.position, -transform.right * 10 , Color.red);
-            rb.AddForce(transform.right * 2);
+            rb.AddForce(transform.right * 1);
             paredIzda = hit2.transform.gameObject;
         }
         
@@ -64,6 +66,8 @@ public class NaveControl : MonoBehaviour
 
                     //rbMisil.AddForce(misilInstance.transform.forward * 10, ForceMode.Impulse);
 
+                    animator.Play("Switches");
+
                     Invoke("CoolDownDisparar", 45);
                     estado = "Disparando";
                 }
@@ -75,13 +79,27 @@ public class NaveControl : MonoBehaviour
                 }
                 else
                 {
-                    if (paredDcha == null) {
+                    float distanciaDcha = float.MaxValue, distanciaIzda = float.MaxValue;
+
+                    if (Physics.Raycast(hit3.transform.position, hit3.transform.right, out RaycastHit hitDcha))
+                    {
+                        distanciaDcha = Vector3.Distance(hit3.transform.position, hitDcha.transform.position);
+                    }
+
+                    if (Physics.Raycast(hit3.transform.position, -hit3.transform.right, out RaycastHit hitIzda))
+                    {
+                        distanciaIzda = Vector3.Distance(hit3.transform.position, hitIzda.transform.position);
+                    }
+
+                    if (distanciaDcha >= distanciaIzda)
+                    {
                         rb.AddForce(transform.right * module, ForceMode.Impulse);
                     }
-                    else 
+                    else
                     {
                         rb.AddForce(-transform.right * module, ForceMode.Impulse);
                     }
+
                 }
             }
         }

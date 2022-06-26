@@ -8,6 +8,8 @@ public class GiroAsteroidJoint : MonoBehaviour
     public float rapidezAngular = 0.0003f;
     public float velocidad = 0.0005f;
     public FixedJoint[] joints;
+    public GameObject firePrefab;
+    private GameObject fireInstance;
     
     // Start is called before the first frame update
     void Start()
@@ -46,7 +48,14 @@ public class GiroAsteroidJoint : MonoBehaviour
         foreach (FixedJoint joint in joints)
         {
             joint.connectedBody.useGravity = true;
+            joint.connectedBody.AddExplosionForce(1000, transform.position, 5);
             joint.breakForce = 0;
+            
         }
+        rb.AddExplosionForce(1000, transform.position, 5);
+        fireInstance = Instantiate(firePrefab, transform.position + new Vector3(0, -30, 0), Quaternion.Euler(-90, 180, 0));
+        Destroy(fireInstance, 5);
     }
+
+
 }

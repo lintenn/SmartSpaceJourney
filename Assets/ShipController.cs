@@ -47,7 +47,7 @@ public class ShipController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.X))
         {
-            rb.AddForce(transform.forward * 5, ForceMode.VelocityChange);
+            rb.AddTorque(transform.up * 1, ForceMode.Impulse);
         }
 
         currentAcceleration = acceleration * (script.enabled ? speed : Input.GetAxis("Vertical"));
