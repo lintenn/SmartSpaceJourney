@@ -9,9 +9,14 @@ public class NaveControl : MonoBehaviour
 
     AlcanzarAltura scriptAltura;
     string estado = "Abajo";
+    string estadoOvni = "Libre";
     public GameObject[] ojos;
     public GameObject misilPrefab;
+    public GameObject remoteMisilPrefab;
+    public GameObject ovniPrefab;
     GameObject misilInstance;
+    GameObject remoteMisilInstance;
+    GameObject ovniInstance;
     public Animator animator;
     
     // Start is called before the first frame update
@@ -64,8 +69,6 @@ public class NaveControl : MonoBehaviour
 
                     misilInstance.transform.LookAt(hit3.transform);
 
-                    //rbMisil.AddForce(misilInstance.transform.forward * 10, ForceMode.Impulse);
-
                     animator.Play("Switches");
 
                     Invoke("CoolDownDisparar", 45);
@@ -104,6 +107,11 @@ public class NaveControl : MonoBehaviour
             }
         }
 
+        if (estadoOvni == "Libre") 
+        {
+            Invoke("ProbarSuerteOvni", 200);
+            estadoOvni = "Probando suerte";
+        }
 
 
 
@@ -132,5 +140,36 @@ public class NaveControl : MonoBehaviour
     private void CoolDownDisparar()
     {
         estado = "Abajo";
+    }
+
+    private void ProbarSuerteOvni() 
+    {
+        if (Random.Range(0, 2) == 1)
+        {
+            ovniInstance = Instantiate(ovniPrefab, transform.position + new Vector3(0, -20, -200), transform.rotation);
+
+            ovniInstance.transform.LookAt(transform.position + new Vector3(10, -20, 0));
+
+            print("SE SPAWNEO UN OVNI");
+        } 
+        else
+        {
+            print("NO HUBO SUERTE");
+        }
+
+        estadoOvni = "Libre";
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        print("OVNI ENTRÓ EN CAMPO DE VISIÓN");
+        if (other.gameObject.CompareTag("Ovni"))
+        {
+            print("OVNI DETECTADO");
+            remoteMisilInstance = Instantiate(remoteMisilPrefab, transform.position + new Vector3(0, -5, 0), transform.rotation);
+            remoteMisilInstance.GetComponent<AlcanzarAltura>().ObjetoPerseguido = other.gameObject;
+            remoteMisilInstance.GetComponent<RemoteMissile>().ObjetoPerseguido = other.gameObject;
+
+        }
     }
 }

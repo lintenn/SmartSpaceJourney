@@ -6,7 +6,7 @@ public class AlcanzarAltura : MonoBehaviour
 {
     private float fuerzaLevitacion;
     private Rigidbody rb;
-    public GameObject ObjetoPerseguido;
+    public GameObject ObjetoPerseguido = null;
     public float RapidezVertical = 0.4f;
     public float AlturaDeseada = 0;
     
@@ -21,6 +21,11 @@ public class AlcanzarAltura : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (ObjetoPerseguido != null)
+        {
+            AlturaDeseada = ObjetoPerseguido.transform.position.y + 30;
+        }
+        
         AlcanzarAlturaM(AlturaDeseada, RapidezVertical);
     }
 

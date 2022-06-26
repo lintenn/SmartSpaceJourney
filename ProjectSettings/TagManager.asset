@@ -6,6 +6,10 @@ TagManager:
   tags:
   - AsteroidJoint
   - Misil
+  - TrackingObject
+  - Actors
+  - FxTemporaire
+  - Ovni
   layers:
   - Default
   - TransparentFX
