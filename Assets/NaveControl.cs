@@ -109,7 +109,7 @@ public class NaveControl : MonoBehaviour
 
         if (estadoOvni == "Libre") 
         {
-            Invoke("ProbarSuerteOvni", 200);
+            Invoke("ProbarSuerteOvni", 150);
             estadoOvni = "Probando suerte";
         }
 
@@ -146,9 +146,9 @@ public class NaveControl : MonoBehaviour
     {
         if (Random.Range(0, 2) == 1)
         {
-            ovniInstance = Instantiate(ovniPrefab, transform.position + new Vector3(0, -20, -200), transform.rotation);
+            ovniInstance = Instantiate(ovniPrefab, transform.position + new Vector3(0, -20, 200), transform.rotation);
 
-            ovniInstance.transform.LookAt(transform.position + new Vector3(10, -20, 0));
+            ovniInstance.transform.LookAt(transform.position + new Vector3(10, -20, 15));
 
             print("SE SPAWNEO UN OVNI");
         } 
@@ -162,14 +162,15 @@ public class NaveControl : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        print("OVNI ENTRÓ EN CAMPO DE VISIÓN");
         if (other.gameObject.CompareTag("Ovni"))
         {
             print("OVNI DETECTADO");
+
+            animator.Play("Switches");
+
             remoteMisilInstance = Instantiate(remoteMisilPrefab, transform.position + new Vector3(0, -5, 0), transform.rotation);
             remoteMisilInstance.GetComponent<AlcanzarAltura>().ObjetoPerseguido = other.gameObject;
             remoteMisilInstance.GetComponent<RemoteMissile>().ObjetoPerseguido = other.gameObject;
-
         }
     }
 }

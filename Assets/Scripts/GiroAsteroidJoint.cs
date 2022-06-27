@@ -37,7 +37,6 @@ public class GiroAsteroidJoint : MonoBehaviour
     {
         if (collider.gameObject.CompareTag("Misil"))
         {
-            print("ENTRAMOS EN EL CENTRO");
             RomperJoints();
             Destroy(collider.gameObject);
         }

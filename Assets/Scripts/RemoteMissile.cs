@@ -23,15 +23,18 @@ public class RemoteMissile : MonoBehaviour
         Vector3 vectorHaciaObjetivo = posObjetivo - transform.position;
         float velocidadRelativa= ObjetoPerseguido.GetComponent<Rigidbody>().velocity.magnitude - rb.velocity.magnitude;
         float angulo = Vector3.Angle(vectorHaciaObjetivo, GetComponent<Rigidbody>().velocity);
+        float factor = vectorHaciaObjetivo.magnitude * rapidezHorizontal;
         if ((velocidadRelativa>0) || (angulo < 70))
         {
-            float factor = vectorHaciaObjetivo.magnitude * rapidezHorizontal;
+            
             rb.AddForce(vectorHaciaObjetivo * propulsionFrontal * factor);
             rb.transform.LookAt(new Vector3(posObjetivo.x, rb.transform.position.y, posObjetivo.z));
         } 
         else 
-        { //Ir frenando... Tarea: cambiar la siguiente instrucción por rb.addForce... con el mismo efecto.
-            rb.velocity = rb.velocity * 0.95f;
+        { //Ir frenando... 
+            //rb.velocity = rb.velocity * 0.95f;
+            rb.AddForce(vectorHaciaObjetivo * propulsionFrontal * factor);
+            rb.AddForce(-rb.velocity * 2f);
             rb.transform.LookAt(new Vector3(posObjetivo.x, rb.transform.position.y, posObjetivo.z));
         }
     }

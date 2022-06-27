@@ -22,7 +22,6 @@ public class AsteroidAdyacente : MonoBehaviour
     {
         if (collider.gameObject.CompareTag("Misil"))
         {
-            print("ENTRAMOS EN EL ADYACENTE");
             center.GetComponent<GiroAsteroidJoint>().RomperJoints();
             Destroy(collider.gameObject);
         }
